@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 require("yargs")
-  .scriptName("httpserver")
+  .scriptName("http-server")
   .command({
     command: "start",
     desc: ":start http server",
@@ -8,4 +8,3 @@ require("yargs")
   })
   .demandCommand()
   .argv.toString();
-
