@@ -4,7 +4,7 @@ const { pathToFileURL, fileURLToPath } = require("url");
 const configPath = pathToFileURL(process.cwd());
 const app = express();
 
-import(`${configPath}/config.js`).then((module) => {
+import(`${configPath}/config`).then((module) => {
   const config = module.default;
 
   app.use(
