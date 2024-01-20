@@ -8,8 +8,8 @@ import(`${configPath}/config.mjs`).then((module) => {
   const config = module.default;
 
   app.use(
-      config.base,
-      express.static(path.join(fileURLToPath(configPath), "dist")),
+    config.base || "/",
+    express.static(path.join(fileURLToPath(configPath), "dist"))
   );
 
   app.get("*", (req, res) => {
@@ -18,10 +18,11 @@ import(`${configPath}/config.mjs`).then((module) => {
 
   const port = process.env.PORT || config.port || 3000;
 
+  let message = `Server running on port ${port}`;
+  config.base && (message += ` with base ${config.base}`);
+
   app.listen(port, () => {
-    console.log(
-        `\x1b[36m%s\x1b[0m`,
-        `Server running on port ${port} with base ${config.base}`,
-    );
+    console.log(`\x1b[36m%s\x1b[0m`, message);
   });
 });
+
