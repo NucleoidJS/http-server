@@ -21,6 +21,7 @@
   "homepage": "https://github.com/NucleoidJS/http-server#readme",
   "dependencies": {
     "express": "^4.18.2",
+    "morgan": "^1.10.0",
     "yargs": "^17.7.2"
   }
 }
