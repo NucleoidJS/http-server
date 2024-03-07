@@ -2,9 +2,14 @@
 require("yargs")
   .scriptName("http-server")
   .command({
-    command: "start",
-    desc: ":start http server",
-    handler: () => require("./server.js"),
+    command: "start [folderName]",
+    desc: "start http server",
+    builder: (yargs) => {
+      yargs.positional("folderName", {
+        describe: "Folder to serve",
+        default: "dist",
+      });
+    },
+    handler: (argv) => require("./server.js")(argv.folderName),
   })
-  .demandCommand()
-  .argv.toString();
+  .demandCommand().argv;
