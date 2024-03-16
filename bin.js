@@ -3,10 +3,10 @@ require("yargs")
   .scriptName("http-server")
   .command({
     command: "start [folderName]",
-    desc: "start http server",
+    desc: "Start HTTP server",
     builder: (yargs) => {
       yargs.positional("folderName", {
-        describe: "Folder to serve",
+        describe: "Set folder name for the server",
         default: "dist",
       });
     },
