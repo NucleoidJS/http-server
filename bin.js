@@ -10,6 +10,6 @@ require("yargs")
         default: "dist",
       });
     },
-    handler: (argv) => require("./server.js")(argv.folderName),
+    handler: (argv) => require("./server").serve(argv.folderName),
   })
   .demandCommand().argv;

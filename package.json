@@ -1,13 +1,12 @@
 {
   "name": "@nucleoidai/http-server",
   "version": "1.1.2",
-  "type": "module",
   "description": "A simple http server for serving static files.",
   "bin": {
-    "http-server": "bin.cjs"
+    "http-server": "bin.js"
   },
   "scripts": {
-    "start": "node bin.cjs start",
+    "start": "node bin.js start",
     "test": "exit 0"
   },
   "repository": {

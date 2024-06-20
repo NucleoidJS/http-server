@@ -1,38 +1,33 @@
-import express from "express";
-import morgan from "morgan";
+const express = require("express");
+const morgan = require("morgan");
+const path = require("path");
+const { pathToFileURL, fileURLToPath } = require("url");
 
 function serve(folderName) {
-  const path = require("path");
-  const { pathToFileURL, fileURLToPath } = require("url");
   const configPath = pathToFileURL(path.resolve(process.cwd()));
 
-  const app = express();
-  app.set("strict routing", true);
-  app.use(morgan("tiny"));
+  import(`${configPath}/config.mjs`).then(({ default: config }) => {
+    const app = express();
+    app.use(morgan("tiny"));
+    app.set("strict routing", true);
 
-  import(`${configPath}/config.js`).then((module) => {
-    const config = module.default;
 
+    const staticPath = path.join(fileURLToPath(configPath), folderName);
     app.use(
       config.base || "/",
-      express.static(path.join(fileURLToPath(configPath), folderName)),
+      express.static(staticPath, { redirect: false }), // Disable automatic redirection in static middleware
     );
 
     app.get("*", (req, res) => {
-      res.sendFile(
-        path.join(fileURLToPath(configPath), folderName, "index.html"),
-      );
+      res.sendFile(path.join(staticPath, "index.html"));
     });
 
     const port = process.env.PORT || config.port || 3000;
 
-    let message = `Server running on port ${port}`;
-    config.base && (message += ` with base ${config.base}`);
-
     app.listen(port, () => {
-      console.log(`\x1b[36m%s\x1b[0m`, message);
+      console.log(`Server running on port ${port} with base ${config.base}`);
     });
   });
 }
 
-export { serve };
+module.exports = { serve };
