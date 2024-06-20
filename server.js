@@ -7,6 +7,7 @@ function serve(folderName) {
   const configPath = pathToFileURL(path.resolve(process.cwd()));
 
   const app = express();
+  app.set("strict routing", true);
   app.use(morgan("tiny"));
 
   import(`${configPath}/config.js`).then((module) => {
