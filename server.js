@@ -10,16 +10,6 @@ function serve(folderName) {
     const app = express();
     app.use(morgan("tiny"));
 
-    app.use((req, res, next) => {
-      if (req.path.slice(-1) === "/" && req.path.length > 1) {
-        const query = req.url.slice(req.path.length);
-        const safePath = req.path.slice(0, -1).replace(/\/+/g, "/");
-        res.redirect(301, safePath + query);
-      } else {
-        next();
-      }
-    });
-
     const staticPath = path.join(fileURLToPath(configPath), folderName);
     app.use(
       config.base || "/",
