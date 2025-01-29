@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const path = require("path");
 const { pathToFileURL, fileURLToPath } = require("url");
 
-function serve(folderName) {
+function serve(folderName, port) {
   const configPath = pathToFileURL(path.resolve(process.cwd()));
 
   import(`${configPath}/config.mjs`).then(({ default: config }) => {
@@ -11,21 +11,23 @@ function serve(folderName) {
     app.use(morgan("tiny"));
 
     const staticPath = path.join(fileURLToPath(configPath), folderName);
+
     app.use(
       config.base || "/",
-      express.static(staticPath, { redirect: false }), // Disable automatic redirection in static middleware
+      express.static(staticPath, { redirect: false }) // Disable automatic redirection in static middleware
     );
 
     app.get("*", (req, res) => {
       res.sendFile(path.join(staticPath, "index.html"));
     });
 
-    const port = process.env.PORT || config.port || 3000;
+    const serverPort = process.env.PORT || port || config.port || 3000;
 
-    app.listen(port, () => {
+    app.listen(serverPort, () => {
       console.log(`Server running on port ${port} with base ${config.base}`);
     });
   });
 }
 
 module.exports = { serve };
+
